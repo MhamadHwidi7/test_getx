@@ -5,6 +5,7 @@ version: 1.0.0+1
 
 environment:
   sdk: ^3.5.4
+
 dependencies:
   flutter:
     sdk: flutter
@@ -28,5 +29,58 @@ dev_dependencies:
   build_runner: ^2.4.13
   freezed: ^2.5.7
   json_serializable: ^6.8.0
+
 flutter:
   uses-material-design: true
+
+scripts:
+  # Code Generation
+  build: flutter pub run build_runner build --delete-conflicting-outputs
+  watch: flutter pub run build_runner watch --delete-conflicting-outputs
+  gen:
+    - flutter pub get
+    - flutter packages pub run build_runner build
+
+  # iOS Utilities
+  start_ios:
+    - xcrun simctl list
+    - open /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app/
+  ios_clean_build:
+    - flutter clean
+    - flutter pub get
+    - pod install --project-directory=ios
+    - flutter run
+
+  # Cleaning and Dependency Management
+  clean:
+    - flutter clean
+    - flutter pub get
+  purge:
+    - pod deintegrate
+    # - rm ios/Flutter/Flutter.podspec # Uncomment if needed
+    - flutter clean
+    - flutter pub get
+    # - pod install --project-directory=ios # Uncomment to reinstall CocoaPods
+  purge_all:
+    - pod deintegrate
+    - rm ios/Flutter/Flutter.podspec
+    - flutter clean
+    - flutter pub cache repair
+    - flutter pub get
+    # - pod install --project-directory=ios # Uncomment to reinstall CocoaPods
+
+  # Android Utilities
+  android_clean_build:
+    - flutter clean
+    - flutter pub get
+    - ./gradlew clean
+    - flutter run
+
+  # Utility Commands
+  setup:
+    - flutter pub get
+    - flutter pub run build_runner build --delete-conflicting-outputs
+  refresh:
+    - flutter clean
+    - flutter pub cache repair
+    - flutter pub get

@@ -1,96 +1,81 @@
-# derry.yaml - Custom Script Configurations
+# derry.yaml - Custom Script Configurations for E-commerce Project
 
 # Code Generation
 build:
-  # Runs build_runner to generate files (e.g., Freezed classes, JSON serialization)
-  - description: "Run build_runner to generate code with conflicting outputs deleted"
+  - description: "Generate code with build_runner, deleting conflicting outputs"
   - command: flutter pub run build_runner build --delete-conflicting-outputs
 
 watch:
-  # Continuously watches and regenerates code on changes
-  - description: "Start build_runner in watch mode to automatically regenerate code"
+  - description: "Watch mode for build_runner to regenerate code on changes"
   - command: flutter pub run build_runner watch --delete-conflicting-outputs
 
 gen:
-  # Fetch dependencies and run build_runner in one command
   - description: "Fetch dependencies and generate code"
   - commands:
       - flutter pub get
       - flutter packages pub run build_runner build
 
-
 # iOS Utilities
 start_ios:
-  # Lists available iOS simulators and launches the iOS Simulator app
   - description: "List iOS simulators and open the Simulator app"
   - commands:
       - xcrun simctl list
       - open /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app/
 
 ios_clean_build:
-  # Cleans and rebuilds iOS dependencies and artifacts
-  - description: "Clean and rebuild iOS dependencies"
+  - description: "Clean iOS project and rebuild dependencies"
   - commands:
       - flutter clean
       - flutter pub get
       - pod install --project-directory=ios
       - flutter run
 
-
 # Cleaning and Dependency Management
 clean:
-  # Removes build artifacts and refreshes dependencies
-  - description: "Clean the project and refresh dependencies"
+  - description: "Clean the project and fetch dependencies"
   - commands:
       - flutter clean
       - flutter pub get
 
 purge:
-  # Cleans deeper, resetting CocoaPods and clearing Flutter artifacts
-  - description: "Deintegrate CocoaPods and reset Flutter build artifacts"
+  - description: "Deep clean for CocoaPods and reset Flutter build artifacts"
   - commands:
       - pod deintegrate
-      # - rm ios/Flutter/Flutter.podspec # Uncomment if you want to delete the Flutter podspec
+      # - rm ios/Flutter/Flutter.podspec # Uncomment if needed
       - flutter clean
       - flutter pub get
       # - pod install --project-directory=ios # Uncomment to reinstall CocoaPods
-      # - flutter run # Uncomment to run the app after purging
+      # - flutter run # Uncomment to run after purging
 
 purge_all:
-  # Full reset of iOS and Flutter dependencies and cache
   - description: "Full purge of iOS integration and Flutter cache repair"
   - commands:
       - pod deintegrate
-      - rm ios/Flutter/Flutter.podspec # Deletes Flutter podspec for a fresh setup
+      - rm ios/Flutter/Flutter.podspec
       - flutter clean
-      - flutter pub cache repair # Clears and repairs the pub cache
+      - flutter pub cache repair
       - flutter pub get
       # - pod install --project-directory=ios # Uncomment to reinstall CocoaPods
-      # - flutter run # Uncomment to run the app after purge
+      # - flutter run # Uncomment to run after full purge
 
-
-# Custom Commands for Android
+# Android Utilities
 android_clean_build:
-  # Cleans Android build artifacts and refreshes dependencies
   - description: "Clean Android build and refresh dependencies"
   - commands:
       - flutter clean
       - flutter pub get
-      - ./gradlew clean # Clean Gradle files for a fresh Android build
+      - ./gradlew clean
       - flutter run
-
 
 # Utility Commands
 setup:
-  # Run initial setup commands, like fetching dependencies and generating code
   - description: "Initial setup: fetch dependencies and generate code"
   - commands:
       - flutter pub get
       - flutter pub run build_runner build --delete-conflicting-outputs
 
 refresh:
-  # Combination of clean and dependency update
-  - description: "Refresh the project by cleaning and updating dependencies"
+  - description: "Refresh project by cleaning and updating dependencies"
   - commands:
       - flutter clean
       - flutter pub cache repair
